@@ -108,7 +108,7 @@ SwaggerUi.partials.signature = (function () {
     }
     return formatted;
   };
-
+/**/
   // copy-pasted from swagger-js
   var getModelSignature = function (name, schema, models, modelPropertyMacro) {
     var strongOpen = '<span class="strong">';
@@ -168,6 +168,21 @@ SwaggerUi.partials.signature = (function () {
 
     // Generate current HTML
     var html = processModel(schema, name);
+
+$.each(references ,
+    function(referenceKey,reference){
+        console.log(reference);
+        $.each(models, function(models,model){
+                if (model.definition !== undefined ){
+                    if ($.inArray('#/definitions/'+referenceKey , model.definition['x-resolved-from'])!== -1){
+                        var refSchema = {$ref :'#/definitions/'+ model.name };
+                        addReference(refSchema, model.name);
+                    }
+                }
+            });
+    });
+
+
 
     // Generate references HTML
     while (_.keys(references).length > 0) {
